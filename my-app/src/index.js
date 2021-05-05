@@ -1,45 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import Square from './components/square.js';
+import Board from './components/board';
 
-function Square(props) {
-    return (
-      <button className="square" onClick={props.onClick}>
-        {props.value}
-      </button>
-    );
-}
 
 function getIndex( row, column, rowSize ) {
     return row * rowSize + column;
 }
 
-class Board extends React.Component {
-    renderSquare( row, column ) {
-        return (<Square value={this.props.squares[getIndex( row, column, this.props.boardSize )]} onClick = {() => this.props.onClick(getIndex( row, column, this.props.boardSize ))} />);
-    }
-    renderRow( rowNumber ) {
-        var items = [];
-        for( var column = 0; column < this.props.boardSize; column++ ) {
-            items.push( this.renderSquare( rowNumber, column ) );
-        }
-        return (
-            <div className='board-row'>
-                {items}
-            </div>
-        );
-    }
-  
-    render() {
-        var rows = [];
-        for( var i = 0; i < this.props.boardSize; i++ ) {
-            rows.push( this.renderRow( i ) );
-        }
-        return (
-            <div>{rows}</div>
-        );
-    }
-}
+
 
 class Game extends React.Component {
   constructor(props){
