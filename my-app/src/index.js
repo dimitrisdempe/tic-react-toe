@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Game from './components/game.js';
-
+import SinglePlayer from './components/singlePlayer.js';
 
 ReactDOM.render(
-  <Game boardSize={6} />,
+  <SinglePlayer boardSize={3} />,
   document.getElementById('root')
 );

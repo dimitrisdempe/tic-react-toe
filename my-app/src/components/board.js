@@ -26,7 +26,7 @@ class Board extends React.Component {
             rows.push( this.renderRow( i ) );
         }
         return (
-            <div>{rows}</div>
+            <div className='board-row'>{rows}</div>
         );
     }
 }
