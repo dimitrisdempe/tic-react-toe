@@ -1,5 +1,8 @@
 import React from 'react';
 import Board from './board.js'
+
+const aux = require("../aux");
+
 class Game extends React.Component {
     constructor(props){
       super(props);
@@ -11,7 +14,7 @@ class Game extends React.Component {
   }  
   handleClick( index ){
     var boardSquares = this.state.squares;
-    if( calculateWinner( boardSquares ) || boardSquares[ index ] ) return;
+    if( aux.calculateWinner( boardSquares ) || boardSquares[ index ] ) return;
     boardSquares[ index ] = this.state.xIsNext ? 'X' : 'O';
     this.setState(state => ({
         squares: boardSquares,
@@ -20,7 +23,7 @@ class Game extends React.Component {
   }
 
 render() {
-    const winner = calculateWinner(this.state.squares);
+    const winner = aux.calculateWinner(this.state.squares);
     let status;
     if (winner){
       status = 'Winner: ' + winner;
