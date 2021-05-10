@@ -2,7 +2,7 @@ import React from 'react';
 import Game from './game.js';
 import Board from './board.js'
 
-const aux = require("../aux");
+const aux = require("../aux/aux");
 
 class SinglePlayer extends Game {
     constructor(props){
@@ -35,11 +35,7 @@ class SinglePlayer extends Game {
                 boardSize = {this.state.boardSize}
                 onClick={(i) => this.handleClick( i )}
                 />
-                </div>
-                <div className="game-info">
-                <div>{status}</div>
-                <ol>{/* TODO */}</ol>
-                </div>
+                </div> 
                 </div>
             );
         }
@@ -51,10 +47,6 @@ class SinglePlayer extends Game {
             boardSize = {this.state.boardSize}
             onClick={(i) => this.handleClick( i )}
             />
-            </div>
-            <div className="game-info">
-            <div>{status}</div>
-            <ol>{/* TODO */}</ol>
             </div>
             </div>
         );

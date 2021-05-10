@@ -1,12 +1,11 @@
 import React from 'react';
 import Square from './square';
-const aux = require('../aux');
-
-
+const utils = require('../aux/utils');
 
 class Board extends React.Component {
     renderSquare( row, column ) {
-        return (<Square value={this.props.squares[aux.getIndex( row, column, this.props.boardSize )]} onClick = {() => this.props.onClick(aux.getIndex( row, column, this.props.boardSize ))} />);
+        return (<Square value={this.props.squares[utils.getIndex( row, column, this.props.boardSize )]} 
+                onClick = {() => this.props.onClick(utils.getIndex( row, column, this.props.boardSize ))} />);
     }
     renderRow( rowNumber ) {
         var items = [];

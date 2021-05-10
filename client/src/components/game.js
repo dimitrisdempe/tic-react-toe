@@ -1,7 +1,7 @@
 import React from 'react';
 import Board from './board.js'
 
-const aux = require("../aux");
+const aux = require("../aux/aux");
 
 class Game extends React.Component {
     constructor(props){
