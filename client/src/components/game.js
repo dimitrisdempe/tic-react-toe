@@ -6,11 +6,20 @@ const aux = require("../aux/aux");
 class Game extends React.Component {
     constructor(props){
         super(props);
+        const size = ( typeof this.props.boardSize === 'undefined') ? 3 : this.props.boardSize;
+        const diff = ( typeof this.props.difficulty === 'undefined') ? 1: this.props.difficulty;
         this.state = {
-            boardSize: this.props.boardSize,
+            boardSize: size,
+            squares: Array( size * size ).fill( null ),
+            xIsNext: true,
+            difficulty: diff,
+        };
+    }
+    resetGame() {
+        this.setState({
             squares: Array( this.props.boardSize * this.props.boardSize ).fill( null ),
             xIsNext: true,
-        };
+        });
     }
     handleClick( index ) {
         var boardSquares = this.state.squares;
@@ -20,6 +29,19 @@ class Game extends React.Component {
             squares: boardSquares,
             xIsNext: !state.xIsNext,
         }));
+    }
+    renderBoard() { 
+         return (
+                <div className="game">
+                <div className="game-board">
+                <Board
+                squares = {this.state.squares}
+                boardSize = {this.state.boardSize}
+                onClick={(i) => this.handleClick( i )}
+                />
+                </div> 
+                </div>
+            );
     }
 }
 

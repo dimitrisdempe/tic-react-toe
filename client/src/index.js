@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import SinglePlayer from './components/singlePlayer.js';
+import SimpleGame from './components/simpleGame.js';
 
 ReactDOM.render(
-  <SinglePlayer boardSize={3} difficulty={2}/>,
+  <SinglePlayer/>,
   document.getElementById('root')
 );
