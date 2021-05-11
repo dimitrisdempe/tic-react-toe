@@ -36,9 +36,9 @@ function bestMove( my_symbol, other_symbol, player, board, depth ) {
 
 function nextMove( symbol, difficulty, board ) {
     switch( difficulty ) {
-        case 0: return bestMove( 'O', 'X', true, board, 1 ).index;
-        case 1: return bestMove( 'O', 'X', true, board, 3 ).index;
-        case 2: return bestMove( 'O', 'X', true, board, 6 ).index;
+        case 0: return bestMove( 'O', 'X', true, board, 2 ).index;
+        case 1: return bestMove( 'O', 'X', true, board, 4 ).index;
+        case 2: return bestMove( 'O', 'X', true, board, 7 ).index;
     }
 }
 
