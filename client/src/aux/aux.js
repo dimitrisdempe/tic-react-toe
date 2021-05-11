@@ -34,8 +34,12 @@ function bestMove( my_symbol, other_symbol, player, board, depth ) {
     return { index: move, score: score };
 }
 
-function nextMove( symbol, board ) {
-    return bestMove( 'O', 'X', true, board, 6 ).index;
+function nextMove( symbol, difficulty, board ) {
+    switch( difficulty ) {
+        case 0: return bestMove( 'O', 'X', true, board, 1 ).index;
+        case 1: return bestMove( 'O', 'X', true, board, 3 ).index;
+        case 2: return bestMove( 'O', 'X', true, board, 6 ).index;
+    }
 }
 
 function calculateWinner(squares) {
