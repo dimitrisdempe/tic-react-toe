@@ -10,24 +10,13 @@ class SinglePlayer extends Game {
         this.state = {
             boardSize: this.props.boardSize,
             squares: Array( this.props.boardSize * this.props.boardSize ).fill( null ),
+            difficulty: this.props.difficulty,
             xIsNext: true,
         };
     }  
-
-    render() {
-        const winner = aux.calculateWinner(this.state.squares);
-        let status;
-        if (winner){
-            status = 'Winner: ' + winner;
-        } else {
-            status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-        }
-        if( !this.state.xIsNext ) {
-            //console.log( aux.nextMove( 'O', this.state.squares ) ) 
-            var move = aux.nextMove( 'O', this.state.squares ); 
-            console.log( move );
-            this.handleClick( move );
-            return (
+    
+    renderBoard() { 
+         return (
                 <div className="game">
                 <div className="game-board">
                 <Board
@@ -38,18 +27,18 @@ class SinglePlayer extends Game {
                 </div> 
                 </div>
             );
+    }
+    render() {
+        const winner = aux.calculateWinner(this.state.squares);
+        if( !this.state.xIsNext ) {
+            //console.log( aux.nextMove( 'O', this.state.squares ) ) 
+            var move = aux.nextMove( 'O', this.state.difficulty, this.state.squares ); 
+            console.log( move );
+            this.handleClick( move );
+            return this.renderBoard();
+        } else {
+            return this.renderBoard();
         }
-        return (
-            <div className="game">
-            <div className="game-board">
-            <Board
-            squares = {this.state.squares}
-            boardSize = {this.state.boardSize}
-            onClick={(i) => this.handleClick( i )}
-            />
-            </div>
-            </div>
-        );
     }
 }
 
