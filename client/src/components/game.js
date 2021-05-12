@@ -17,7 +17,7 @@ class Game extends React.Component {
     }
     resetGame() {
         this.setState({
-            squares: Array( this.props.boardSize * this.props.boardSize ).fill( null ),
+            squares: Array( this.state.boardSize * this.state.boardSize).fill( null ),
             xIsNext: true,
         });
     }
@@ -29,6 +29,14 @@ class Game extends React.Component {
             squares: boardSquares,
             xIsNext: !state.xIsNext,
         }));
+    }
+    renderButton(){
+        return(
+                    <div><button onClick = {() => this.resetGame()}>Reset</button></div>
+                
+
+
+        );
     }
     renderBoard() { 
          return (

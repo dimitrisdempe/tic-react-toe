@@ -12,9 +12,25 @@ class SinglePlayer extends Game {
             var move = aux.nextMove( 'O', this.state.difficulty, this.state.squares ); 
             console.log( move );
             this.handleClick( move );
-            return this.renderBoard();
+            return (<div className="game">
+            <div className="game-board">
+                {this.renderBoard()}
+            </div>
+            <div className="game-info">
+              <div>{this.renderButton()}</div>
+            </div>
+          </div>
+            );
         } else {
-            return this.renderBoard();
+            return (<div className="game">
+            <div className="game-board">
+                {this.renderBoard()}
+            </div>
+            <div className="game-info">
+              <div>{this.renderButton()}</div>
+            </div>
+          </div>
+            );
         }
     }
 }
