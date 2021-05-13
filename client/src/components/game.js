@@ -48,6 +48,9 @@ class Game extends React.Component {
                 onClick={(i) => this.handleClick( i )}
                 />
                 </div> 
+                <div className="game-info">
+          <div>{this.renderButton()}</div>
+        </div>
                 </div>
             );
     }
