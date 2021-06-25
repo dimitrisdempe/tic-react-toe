@@ -1,5 +1,10 @@
-const utils = require("./utils");
-const checks = require("./checks");
+import {getIndex} from './utils';
+import {
+  checkHorizontal,
+  checkVertical,
+  checkMainDiagonal,
+  checkSecondaryDiagonal
+} from './checks';
 
 function bestMove( my_symbol, other_symbol, player, board, depth ) {
     if( calculateWinner( board ) == my_symbol ) return { index: null, score: 10 };
@@ -10,13 +15,13 @@ function bestMove( my_symbol, other_symbol, player, board, depth ) {
     var all_moves = [];
     for( let row = 0; row < boardSize; row++ ) {
         for( let column = 0; column < boardSize; column++ ) {
-            let curIndex = utils.getIndex( row, column, boardSize );
+            let curIndex = getIndex( row, column, boardSize );
             if( board[ curIndex ] != null ) continue;
             if( player ) board[ curIndex ] = my_symbol;
             else board[ curIndex ] = other_symbol;
             let returned = bestMove( my_symbol, other_symbol, !player, board, depth - 1 );
             all_moves.push( { index: curIndex, score: returned.score } );
-            board[ utils.getIndex( row, column, boardSize ) ] = null;
+            board[ getIndex( row, column, boardSize ) ] = null;
         }
     }
     var score = all_moves[ 0 ].score;
@@ -24,9 +29,9 @@ function bestMove( my_symbol, other_symbol, player, board, depth ) {
     for( let i = 1; i < all_moves.length; i++ ) {
         if( player && score < all_moves[ i ].score ) {
             move = all_moves[ i ].index;
-            score = all_moves[ i ].score; 
+            score = all_moves[ i ].score;
         }
-        else if( !player && score > all_moves[ i ].score ) { 
+        else if( !player && score > all_moves[ i ].score ) {
             move = all_moves[ i ].index;
             score = all_moves[ i ].score;
         }
@@ -43,16 +48,16 @@ function nextMove( symbol, difficulty, board ) {
 }
 
 function calculateWinner(squares) {
-    let mainDiagCondition = checks.checkMainDiagonal( squares );
+    let mainDiagCondition = checkMainDiagonal( squares );
     if( mainDiagCondition ) return mainDiagCondition;
 
-    let secondaryDiagCondition = checks.checkSecondaryDiagonal( squares );
+    let secondaryDiagCondition = checkSecondaryDiagonal( squares );
     if( secondaryDiagCondition ) return secondaryDiagCondition;
-    
-    let horCondition = checks.checkHorizontal( squares );
+
+    let horCondition = checkHorizontal( squares );
     if( horCondition ) return horCondition;
-    
-    let vertCondition = checks.checkVertical( squares );
+
+    let vertCondition = checkVertical( squares );
     if( vertCondition ) return vertCondition;
     return null;
 }
@@ -66,5 +71,4 @@ function isTie( squares ) {
     return false;
 }
 
-
-module.exports = {nextMove, calculateWinner};
+export {nextMove, calculateWinner};

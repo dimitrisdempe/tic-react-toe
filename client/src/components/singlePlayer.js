@@ -1,15 +1,14 @@
 import React from 'react';
 import Game from './game.js';
-import Board from './board.js'
 
-const aux = require("../aux/aux");
+import {calculateWinner, nextMove} from '../aux/aux';
 
 class SinglePlayer extends Game {
     render() {
-        const winner = aux.calculateWinner(this.state.squares);
+        const winner = calculateWinner(this.state.squares);
         if( !this.state.xIsNext ) {
-            //console.log( aux.nextMove( 'O', this.state.squares ) ) 
-            var move = aux.nextMove( 'O', this.state.difficulty, this.state.squares ); 
+            //console.log( aux.nextMove( 'O', this.state.squares ) )
+            var move = nextMove( 'O', this.state.difficulty, this.state.squares );
             console.log( move );
             this.handleClick( move );
             return this.renderBoard();

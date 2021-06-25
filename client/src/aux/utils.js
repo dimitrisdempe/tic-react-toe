@@ -1,5 +1,3 @@
-function getIndex( row, column, rowSize ) {
-    return row * rowSize + column;
-}
+const getIndex = ( row, column, rowSize ) => (row * rowSize + column);
 
-module.exports = { getIndex };
+export { getIndex };
