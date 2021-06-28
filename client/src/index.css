@@ -13,6 +13,10 @@ ol, ul {
   display: table;
 }
 
+.winning {
+  color: green;
+}
+
 .status {
   margin-bottom: 10px;
 }

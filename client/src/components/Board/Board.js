@@ -2,7 +2,7 @@ import React from 'react';
 import {Row} from './Row';
 
 
-const Board = ({squares, boardSize, onClick}) => (
+const Board = ({squares, boardSize, onClick, winningSquares}) => (
   <div className='board-row'>
   {
     [...Array(boardSize).keys()].map( i =>
@@ -11,6 +11,7 @@ const Board = ({squares, boardSize, onClick}) => (
         boardSize={boardSize}
         onClick={onClick}
         rowNumber={i}
+        winningSquares={winningSquares}
       />
     )
   }

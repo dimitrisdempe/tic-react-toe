@@ -10,6 +10,7 @@ class Game extends React.Component {
         this.state = {
             boardSize: size,
             squares: Array( size * size ).fill( null ),
+            winningSquares: Array( size * size ).fill( false ),
             xIsNext: true,
             difficulty: diff,
         };
@@ -17,17 +18,26 @@ class Game extends React.Component {
     resetGame() {
         this.setState({
             squares: Array( this.state.boardSize * this.state.boardSize).fill( null ),
+            winningSquares: Array( this.state.boardSize * this.state.boardSize).fill( false ),
             xIsNext: true,
         });
     }
     handleClick( index ) {
-        var boardSquares = this.state.squares;
+        let boardSquares = this.state.squares;
+        let winningSquares = this.state.winningSquares;
+
         if( calculateWinner( boardSquares ) || boardSquares[ index ] ) return;
+
         boardSquares[ index ] = this.state.xIsNext ? 'X' : 'O';
-        this.setState(state => ({
+
+        // elegxos an nikise kapoios
+
+
+        this.setState({
             squares: boardSquares,
             xIsNext: !this.state.xIsNext,
-        }));
+            winningSquares: winningSquares,
+        });
     }
     renderButton(){
         return(
@@ -41,6 +51,7 @@ class Game extends React.Component {
                 <Board
                 squares = {this.state.squares}
                 boardSize = {this.state.boardSize}
+                winningSquares = {this.state.winningSquares}
                 onClick={i => this.handleClick(i)}
                 />
                 </div>
