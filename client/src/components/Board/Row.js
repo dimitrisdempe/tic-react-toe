@@ -9,7 +9,7 @@ const Row = ({boardSize, squares, rowNumber, onClick, winningSquares}) => (
             (<Square
               value = {squares[getIndex(rowNumber, i, boardSize)]}
               onClick = {() => onClick(getIndex(rowNumber, i, boardSize))}
-              winning = {winningSquares[getIndex(rowNumber, i, boardSize)]}
+              isWinning = {winningSquares[getIndex(rowNumber, i, boardSize)]}
             />)
         )}
     </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Board} from './Board';
 import {calculateWinner} from '../aux/aux';
+import { fillWinningSquares } from '../aux/utils';
 
 class Game extends React.Component {
     constructor(props){
@@ -26,11 +27,15 @@ class Game extends React.Component {
         let boardSquares = this.state.squares;
         let winningSquares = this.state.winningSquares;
 
-        if( calculateWinner( boardSquares ) || boardSquares[ index ] ) return;
+        if( calculateWinner( boardSquares )[0] || boardSquares[ index ] ) return;
 
         boardSquares[ index ] = this.state.xIsNext ? 'X' : 'O';
 
-        // elegxos an nikise kapoios
+        if (calculateWinner(boardSquares)[0]){
+            let winningLine = calculateWinner(boardSquares)[1];
+            winningSquares = fillWinningSquares(winningSquares, winningLine[0], winningLine[1], winningLine[2]);
+
+        }
 
 
         this.setState({

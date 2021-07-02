@@ -7,9 +7,9 @@ import {
 } from './checks';
 
 function bestMove( my_symbol, other_symbol, player, board, depth ) {
-    if( calculateWinner( board ) == my_symbol ) return { index: null, score: 10 };
+    if( calculateWinner( board )[0] == my_symbol ) return { index: null, score: 10 };
     else if( isTie( board ) ) return { index: null, score: 0 };
-    else if( calculateWinner( board ) == other_symbol ) return { index: null, score: -10 };
+    else if( calculateWinner( board )[0] == other_symbol ) return { index: null, score: -10 };
     else if( depth == 0 ) return { index: null, score: 0 };
     var boardSize = Math.floor( Math.sqrt( board.length ) );
     var all_moves = [];
@@ -48,18 +48,22 @@ function nextMove( symbol, difficulty, board ) {
 }
 
 function calculateWinner(squares) {
-    let mainDiagCondition = checkMainDiagonal( squares );
-    if( mainDiagCondition ) return mainDiagCondition;
+    let mainDiagCondition = checkMainDiagonal( squares )[0];
+    let winningMainDiagonal = checkMainDiagonal(squares)[1];
+    if( mainDiagCondition ) return [mainDiagCondition,winningMainDiagonal];
 
-    let secondaryDiagCondition = checkSecondaryDiagonal( squares );
-    if( secondaryDiagCondition ) return secondaryDiagCondition;
+    let secondaryDiagCondition = checkSecondaryDiagonal( squares )[0];
+    let winningDiagonal = checkSecondaryDiagonal(squares)[1];
+    if( secondaryDiagCondition ) return [secondaryDiagCondition,winningDiagonal];
 
-    let horCondition = checkHorizontal( squares );
-    if( horCondition ) return horCondition;
+    let horCondition = checkHorizontal( squares )[0];
+    let winningHorizontal = checkHorizontal(squares)[1];
+    if( horCondition ) return [horCondition,winningHorizontal];
 
-    let vertCondition = checkVertical( squares );
-    if( vertCondition ) return vertCondition;
-    return null;
+    let vertCondition = checkVertical( squares )[0];
+    let winningVertical = checkVertical(squares)[1];
+    if( vertCondition ) return [vertCondition,winningVertical];
+    return [null,null];
 }
 
 function isTie( squares ) {
@@ -67,7 +71,7 @@ function isTie( squares ) {
     for( let i = 0; i < squares.length; i++ ) {
         if( squares[ i ] == null ) countNulls++;
     }
-    if( calculateWinner( squares ) == null && !countNulls ) return true;
+    if( calculateWinner( squares )[0] == null && !countNulls ) return true;
     return false;
 }
 
