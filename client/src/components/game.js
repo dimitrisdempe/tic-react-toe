@@ -49,6 +49,36 @@ class Game extends React.Component {
                     <div><button onClick = {() => this.resetGame()}>Reset</button></div>
         );
     }
+    renderEasyButton(){
+        return(
+            <button onClick = {()=>this.changeToEasy()}>Easy</button>
+        );
+    }
+    renderMediumButton(){
+        return(
+             <button onClick = {()=>this.changeToMedium()}>Medium</button>
+        );
+    }
+    renderHardButton(){
+        return(
+             <button onClick = {()=>this.changeToHard()}>Hard</button>
+        );
+    }
+    changeToEasy(){
+        this.setState({
+            difficulty: 0,
+        });
+    }
+    changeToMedium(){
+        this.setState({
+            difficulty: 1,
+        });
+    }
+    changeToHard(){
+        this.setState({
+            difficulty: 2,
+        });
+    }
     renderBoard() {
          return (
                 <div className="game">
@@ -62,7 +92,11 @@ class Game extends React.Component {
                 </div>
                 <div className="game-info">
           <div>{this.renderButton()}</div>
+          <div>{this.renderEasyButton()}</div>
+          <div>{this.renderMediumButton()}</div>
+          <div>{this.renderHardButton()}</div>
         </div>
+        
                 </div>
             );
     }
