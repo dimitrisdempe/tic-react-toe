@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import SinglePlayer from './components/singlePlayer.js';
+import Game from './components/Game.js';
 // import SimpleGame from './components/simpleGame.js';
 
 ReactDOM.render(
-  <SinglePlayer/>,
+  <Game/>,
   document.getElementById('root')
 );

@@ -92,9 +92,7 @@ class Game extends React.Component {
                 </div>
                 <div className="game-info">
           <div>{this.renderButton()}</div>
-          <div>{this.renderEasyButton()}</div>
-          <div>{this.renderMediumButton()}</div>
-          <div>{this.renderHardButton()}</div>
+          <div>{this.renderEasyButton}</div>
         </div>
         
                 </div>
