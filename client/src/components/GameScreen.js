@@ -1,7 +1,7 @@
 import React from 'react';
 import {Board} from './Board';
-
-const HumanGame = ({squares, boardSize, winningSquares, handleClick, renderButton}) => (
+// import ResetButton
+const GameScreen = ({squares, boardSize, winningSquares, handleClick, renderButton, opponent}) => (
     <div className="game">
             <div className="game-board">
               <Board
@@ -17,4 +17,4 @@ const HumanGame = ({squares, boardSize, winningSquares, handleClick, renderButto
           </div>
 
 )
-export {HumanGame}
+export {GameScreen}

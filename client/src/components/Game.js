@@ -2,13 +2,12 @@ import React from 'react';
 import {Board} from './Board';
 import {StartScreen} from './StartScreen';
 import {DiffScreen} from './DiffScreen';
-import {calculateWinner} from '../aux/aux';
+import {calculateWinner, nextMove} from '../aux/aux';
 import { fillWinningSquares } from '../aux/utils';
 import {HumanChoose} from './HumanChoose';
 import {JoinGame} from './JoinGame';
 import {CreateGame} from './CreateGame';
-import {HumanGame} from './HumanGame';
-
+import {GameScreen} from './GameScreen';
 import PcGame from './PcGame.js';
 
 class Game extends React.Component {
@@ -24,6 +23,10 @@ class Game extends React.Component {
             xIsNext: true,
             difficulty: diff,
         };
+        // socket connect
+        // this.socket = socket...()
+        // this.socket.on(....)
+
     }
     resetGame() {
         this.setState({
@@ -39,6 +42,7 @@ class Game extends React.Component {
         if( calculateWinner( boardSquares )[0] || boardSquares[ index ] ) return;
 
         boardSquares[ index ] = this.state.xIsNext ? 'X' : 'O';
+        // this.socket.emit(.....)
 
         if (calculateWinner(boardSquares)[0]){
             let winningLine = calculateWinner(boardSquares)[1];
@@ -100,7 +104,7 @@ class Game extends React.Component {
            difficulty: diff
         });
       }
-  
+
 
     selectGameScreen(){
       console.log(this.state);
@@ -115,8 +119,8 @@ class Game extends React.Component {
         case "pc-choose-diff":
             return <DiffScreen
             changeToEasy = {() => this.setDiffProperty(0)}
-            changeToMedium = {() => this.setStateProperty(1)}
-            changeToHard = {() => this.setStateProperty(2)}
+            changeToMedium = {() => this.setDiffProperty(1)}
+            changeToHard = {() => this.setDiffProperty(2)}
             />
             break;
         case "human-choose-game":
@@ -131,7 +135,24 @@ class Game extends React.Component {
             />
             break;
         case "pc-game":
-            return <PcGame/>
+            return <GameScreen
+                      squares = {this.state.squares}
+                      boardSize = {this.state.boardSize}
+                      winningSquares = {this.state.winningSquares}
+                      handleClick = {i => this.handleClick(i)}
+                      renderButton = {() => this.renderButton()}
+                      opponent = 'pc'
+                   />
+            break;
+        case "pc-game":
+            return <GameScreen
+                      squares = {this.state.squares}
+                      boardSize = {this.state.boardSize}
+                      winningSquares = {this.state.winningSquares}
+                      renderButton = {() => this.renderButton()}
+                      handleClick = {i => this.handleClick(i)}
+                      opponent = 'human'
+                  />
             break;
            // case "...":
         //    <.../>
@@ -158,6 +179,11 @@ class Game extends React.Component {
     }
 
     render() {
+       // if pc-game & 'o' is next, make move and setState
+       if(this.state.appState == 'pc-game' && !this.state.xIsNext) {
+         const pcMove = nextMove( 'O', this.state.difficulty, this.state.squares );
+         this.handleClick(pcMove);
+       }
        return this.selectGameScreen();
     }
 }
