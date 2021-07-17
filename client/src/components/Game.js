@@ -1,8 +1,15 @@
 import React from 'react';
 import {Board} from './Board';
 import {StartScreen} from './StartScreen';
+import {DiffScreen} from './DiffScreen';
 import {calculateWinner} from '../aux/aux';
 import { fillWinningSquares } from '../aux/utils';
+import {HumanChoose} from './HumanChoose';
+import {JoinGame} from './JoinGame';
+import {CreateGame} from './CreateGame';
+import {HumanGame} from './HumanGame';
+
+import PcGame from './PcGame.js';
 
 class Game extends React.Component {
     constructor(props){
@@ -87,6 +94,13 @@ class Game extends React.Component {
         [prop]: value
       });
     }
+    setDiffProperty(diff){
+        this.setState({
+           appState: 'pc-game' ,
+           difficulty: diff
+        });
+      }
+  
 
     selectGameScreen(){
       console.log(this.state);
@@ -98,7 +112,28 @@ class Game extends React.Component {
                     botOnClick = {() => this.setStateProperty('appState', 'pc-choose-diff')}
                   />
            break;
-        // case "...":
+        case "pc-choose-diff":
+            return <DiffScreen
+            changeToEasy = {() => this.setDiffProperty(0)}
+            changeToMedium = {() => this.setStateProperty(1)}
+            changeToHard = {() => this.setStateProperty(2)}
+            />
+            break;
+        case "human-choose-game":
+            return <HumanChoose
+            createOnClick = {() => this.setStateProperty('appState','human-create')}
+            joinOnClick = {() => this.setStateProperty('appState', 'human-join')}
+            />
+            break;
+        case "human-join":
+            return <JoinGame
+            joinGameOnClick = {() => this.setStateProperty('appState', 'human-game')}
+            />
+            break;
+        case "pc-game":
+            return <PcGame/>
+            break;
+           // case "...":
         //    <.../>
 
         default:

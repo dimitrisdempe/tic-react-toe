@@ -1,6 +1,6 @@
 import React from 'react';
-import Game from './game.js';
-// import Board from './board.js'
+import Game from './Game.js';
+// import Board from './Board.js'
 
 class SimpleGame extends Game {
     render() {

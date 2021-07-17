@@ -1,6 +1,6 @@
 import React from 'react';
-import Game from './game.js';
-
+import Game from './Game.js';
+import {Board} from './Board'
 import {calculateWinner, nextMove} from '../aux/aux';
 
 class SinglePlayer extends Game {
@@ -11,9 +11,39 @@ class SinglePlayer extends Game {
             var move = nextMove( 'O', this.state.difficulty, this.state.squares );
             console.log( move );
             this.handleClick( move );
-            return this.renderBoard();
+            return <div className="game">
+            <div className="game-board">
+              <Board
+                squares = {this.state.squares}
+                boardSize = {this.state.boardSize}
+                winningSquares = {this.state.winningSquares}
+                onClick={i => this.handleClick(i)}
+              />
+            </div>
+            <div className="game-info">
+              <div>{this.renderButton()}</div>
+              <div>{this.renderEasyButton()}</div>
+              <div>{this.renderMediumButton()}</div>
+              <div>{this.renderHardButton()}</div>
+            </div>
+          </div>
         } else {
-            return this.renderBoard();
+            <div className="game">
+            <div className="game-board">
+              <Board
+                squares = {this.state.squares}
+                boardSize = {this.state.boardSize}
+                winningSquares = {this.state.winningSquares}
+                onClick={i => this.handleClick(i)}
+              />
+            </div>
+            <div className="game-info">
+              <div>{this.renderButton()}</div>
+              <div>{this.renderEasyButton()}</div>
+              <div>{this.renderMediumButton()}</div>
+              <div>{this.renderHardButton()}</div>
+            </div>
+          </div>
         }
     }
 }
