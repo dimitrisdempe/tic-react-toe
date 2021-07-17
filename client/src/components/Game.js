@@ -140,19 +140,22 @@ class Game extends React.Component {
                       boardSize = {this.state.boardSize}
                       winningSquares = {this.state.winningSquares}
                       handleClick = {i => this.handleClick(i)}
-                      renderButton = {() => this.renderButton()}
                       opponent = 'pc'
+                      resetGame = {() => this.resetGame()}
                    />
             break;
-        case "pc-game":
+        case "human-game":
             return <GameScreen
                       squares = {this.state.squares}
                       boardSize = {this.state.boardSize}
                       winningSquares = {this.state.winningSquares}
-                      renderButton = {() => this.renderButton()}
                       handleClick = {i => this.handleClick(i)}
                       opponent = 'human'
+                      resetGame = {()=>this.resetGame}
                   />
+            break;
+        case "human-create":
+            return <CreateGame/>
             break;
            // case "...":
         //    <.../>

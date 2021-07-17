@@ -1,7 +1,7 @@
 import React from 'react';
 import {Board} from './Board';
-// import ResetButton
-const GameScreen = ({squares, boardSize, winningSquares, handleClick, renderButton, opponent}) => (
+import {ResetButton} from './ResetButton'
+const GameScreen = ({squares, boardSize, winningSquares, handleClick, opponent, resetGame}) => (
     <div className="game">
             <div className="game-board">
               <Board
@@ -12,7 +12,11 @@ const GameScreen = ({squares, boardSize, winningSquares, handleClick, renderButt
               />
             </div>
             <div className="game-info">
-              <div>{renderButton()}</div>
+              <div>
+                <ResetButton
+                resetGame = {() => resetGame()}
+                />
+              </div>
             </div>
           </div>
 
