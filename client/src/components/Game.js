@@ -8,6 +8,7 @@ import {HumanChoose} from './HumanChoose';
 import {JoinGame} from './JoinGame';
 import {CreateGame} from './CreateGame';
 import {GameScreen} from './GameScreen';
+import io from 'socket.io-client';
 
 class Game extends React.Component {
     constructor(props){
@@ -21,12 +22,21 @@ class Game extends React.Component {
             winningSquares: Array( size * size ).fill( false ),
             xIsNext: true,
             difficulty: diff,
+            gameID: null,
+            mySymbol: null
         };
-        // socket connect
-        // this.socket = socket...()
-        // this.socket.on(....)
 
+        this.socket = io('localhost:8000');
+
+        this.socket.on('created-game', gameID => {
+          setTimeout(() => {
+            this.setState({
+            gameID: gameID
+          });
+        },
+        1000)});
     }
+
     resetGame() {
         this.setState({
             squares: Array( this.state.boardSize * this.state.boardSize).fill( null ),
@@ -69,6 +79,16 @@ class Game extends React.Component {
         });
       }
 
+    handleJoinGame(gameID){
+      // socket.emit('join')
+      this.setStateProperty('appState', 'human-game');
+
+    }
+
+    handleCreateGame(){
+      this.socket.emit('create-game', {});
+      this.setStateProperty('appState','human-create');
+    }
 
     selectGameScreen(){
       console.log(this.state);
@@ -89,15 +109,20 @@ class Game extends React.Component {
             break;
         case "human-choose-game":
             return <HumanChoose
-            createOnClick = {() => this.setStateProperty('appState','human-create')}
+            createOnClick = {() => this.handleCreateGame()}
             joinOnClick = {() => this.setStateProperty('appState', 'human-join')}
             />
             break;
         case "human-join":
             return <JoinGame
-              onSubmit = {(gameID) => this.setStateProperty('appState', 'human-game')}
+              onSubmit = {(gameID) => this.handleJoinGame(gameID)}
             />
             break;
+        case "human-create":
+          return <CreateGame
+                    gameID = {this.state.gameID}
+                 />
+          break;
         case "pc-game":
             return <GameScreen
                       squares = {this.state.squares}
@@ -118,12 +143,6 @@ class Game extends React.Component {
                       resetGame = {()=> this.resetGame()}
                   />
             break;
-        case "human-create":
-            return <CreateGame/>
-            break;
-           // case "...":
-        //    <.../>
-
         default:
           break;
       }
