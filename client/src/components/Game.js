@@ -8,7 +8,6 @@ import {HumanChoose} from './HumanChoose';
 import {JoinGame} from './JoinGame';
 import {CreateGame} from './CreateGame';
 import {GameScreen} from './GameScreen';
-import PcGame from './PcGame.js';
 
 class Game extends React.Component {
     constructor(props){
@@ -57,41 +56,6 @@ class Game extends React.Component {
             winningSquares: winningSquares,
         });
     }
-    renderButton(){
-        return(
-                    <div><button onClick = {() => this.resetGame()}>Reset</button></div>
-        );
-    }
-    renderEasyButton(){
-        return(
-            <button onClick = {()=>this.changeToEasy()}>Easy</button>
-        );
-    }
-    renderMediumButton(){
-        return(
-             <button onClick = {()=>this.changeToMedium()}>Medium</button>
-        );
-    }
-    renderHardButton(){
-        return(
-             <button onClick = {()=>this.changeToHard()}>Hard</button>
-        );
-    }
-    changeToEasy(){
-        this.setState({
-            difficulty: 0,
-        });
-    }
-    changeToMedium(){
-        this.setState({
-            difficulty: 1,
-        });
-    }
-    changeToHard(){
-        this.setState({
-            difficulty: 2,
-        });
-    }
 
     setStateProperty(prop, value){
       this.setState({
@@ -131,7 +95,7 @@ class Game extends React.Component {
             break;
         case "human-join":
             return <JoinGame
-            joinGameOnClick = {() => this.setStateProperty('appState', 'human-game')}
+              onSubmit = {(gameID) => this.setStateProperty('appState', 'human-game')}
             />
             break;
         case "pc-game":
@@ -151,7 +115,7 @@ class Game extends React.Component {
                       winningSquares = {this.state.winningSquares}
                       handleClick = {i => this.handleClick(i)}
                       opponent = 'human'
-                      resetGame = {()=>this.resetGame}
+                      resetGame = {()=> this.resetGame()}
                   />
             break;
         case "human-create":
@@ -161,22 +125,7 @@ class Game extends React.Component {
         //    <.../>
 
         default:
-          return <div className="game">
-            <div className="game-board">
-              <Board
-                squares = {this.state.squares}
-                boardSize = {this.state.boardSize}
-                winningSquares = {this.state.winningSquares}
-                onClick={i => this.handleClick(i)}
-              />
-            </div>
-            <div className="game-info">
-              <div>{this.renderButton()}</div>
-              <div>{this.renderEasyButton()}</div>
-              <div>{this.renderMediumButton()}</div>
-              <div>{this.renderHardButton()}</div>
-            </div>
-          </div>
+          break;
       }
 
     }
@@ -185,7 +134,7 @@ class Game extends React.Component {
        // if pc-game & 'o' is next, make move and setState
        if(this.state.appState == 'pc-game' && !this.state.xIsNext) {
          const pcMove = nextMove( 'O', this.state.difficulty, this.state.squares );
-         this.handleClick(pcMove);
+         setTimeout(() => this.handleClick(pcMove), 1000);
        }
        return this.selectGameScreen();
     }

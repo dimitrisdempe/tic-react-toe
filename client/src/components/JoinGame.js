@@ -1,11 +1,11 @@
 import React from 'react';
-const JoinGame = ({joinGameOnClick}) => (
+import {Form} from './Form';
+
+const JoinGame = ({onSubmit}) => (
     <div>
-        <p>Enter socket.id</p>
-        <input type = "number"/>
-        <br/>
-        <br/>
-        <button onClick = {() => joinGameOnClick()}>Enter the game</button>
+        <Form
+          onSubmit = {onSubmit}
+        />
     </div>
 )
 export {JoinGame}
