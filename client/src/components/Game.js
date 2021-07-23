@@ -16,6 +16,7 @@ class Game extends React.Component {
         const size = ( typeof this.props.boardSize === 'undefined') ? 3 : this.props.boardSize;
         const diff = ( typeof this.props.difficulty === 'undefined') ? 2: this.props.difficulty;
         this.state = {
+            isGameIDvalid: true,
             appState: "start", // "start", "human-choose-game", "human-join", "human-create", "human-game", "pc-choose-diff", "pc-game"
             boardSize: size,
             squares: Array( size * size ).fill( null ),
@@ -28,13 +29,15 @@ class Game extends React.Component {
 
         this.socket = io('localhost:8000');
 
-        this.socket.on('created-game', gameID => {
+        this.socket.on('created-game', (gameID) => {
           setTimeout(() => {
             this.setState({
             gameID: gameID
           });
+
         },
         1000)});
+        
     }
 
     resetGame() {
@@ -80,10 +83,20 @@ class Game extends React.Component {
       }
 
     handleJoinGame(gameID){
-      // socket.emit('join')
-      this.setStateProperty('appState', 'human-game');
+      this.socket.emit('join', gameID)
+      this.socket.on('play-game',(flag) => {
+        if (flag){
+          this.setStateProperty('appState', 'human-game');
 
+        }
+        else{
+          this.setState({
+            isGameIDvalid: false
+          })
+        }
+      })
     }
+    
 
     handleCreateGame(){
       this.socket.emit('create-game', {});
@@ -116,7 +129,9 @@ class Game extends React.Component {
         case "human-join":
             return <JoinGame
               onSubmit = {(gameID) => this.handleJoinGame(gameID)}
+              isGameIDvalid = {this.state.isGameIDvalid}
             />
+
             break;
         case "human-create":
           return <CreateGame
