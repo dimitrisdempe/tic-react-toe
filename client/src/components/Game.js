@@ -16,6 +16,7 @@ class Game extends React.Component {
         const size = ( typeof this.props.boardSize === 'undefined') ? 3 : this.props.boardSize;
         const diff = ( typeof this.props.difficulty === 'undefined') ? 2: this.props.difficulty;
         this.state = {
+            joined: null,
             isGameIDvalid: true,
             appState: "start", // "start", "human-choose-game", "human-join", "human-create", "human-game", "pc-choose-diff", "pc-game"
             boardSize: size,
@@ -28,7 +29,11 @@ class Game extends React.Component {
         };
 
         this.socket = io('localhost:8000');
-
+        this.socket.on('opponentEntered',()=>{
+          this.setState({
+            joined: true
+          })
+         })
         this.socket.on('created-game', (gameID) => {
           setTimeout(() => {
             this.setState({
@@ -37,6 +42,32 @@ class Game extends React.Component {
 
         },
         1000)});
+        this.socket.on('opponent-played',(index)=>{
+          console.log('stefo gynaika')
+          if (!this.isMyTurn()){
+            console.log('stefo ton efage')
+            this.handleClick(index)
+            
+          }
+        })
+        this.socket.on('play-game',(flag) => {
+          if (flag){
+      
+            let mySymbol = this.state.appState == "human-create"? 'X':'O'
+            this.socket.emit('joinedGame',true)
+            this.setState({
+              mySymbol: mySymbol,
+              appState: "human-game"
+            })
+            
+                       
+          }
+          else{
+            this.setState({
+              isGameIDvalid: false
+            })
+          }
+        })
         
     }
 
@@ -47,15 +78,24 @@ class Game extends React.Component {
             xIsNext: true,
         });
     }
+    isMyTurn(){
+      return ((this.state.xIsNext && this.state.mySymbol == 'X')||(!this.state.xIsNext && this.state.mySymbol == 'O'))
+        
+    }
     handleClick( index ) {
+        console.log('inside')
         let boardSquares = this.state.squares;
         let winningSquares = this.state.winningSquares;
 
         if( calculateWinner( boardSquares )[0] || boardSquares[ index ] ) return;
 
         boardSquares[ index ] = this.state.xIsNext ? 'X' : 'O';
-        // this.socket.emit(.....)
-
+        console.log(boardSquares)
+        console.log(index)
+        if (this.isMyTurn()){
+        this.socket.emit('move',index)
+        }
+        
         if (calculateWinner(boardSquares)[0]){
             let winningLine = calculateWinner(boardSquares)[1];
             winningSquares = fillWinningSquares(winningSquares, winningLine[0], winningLine[1], winningLine[2]);
@@ -78,30 +118,28 @@ class Game extends React.Component {
     setDiffProperty(diff){
         this.setState({
            appState: 'pc-game' ,
-           difficulty: diff
+           difficulty: diff,
+           mySymbol: 'X'
         });
       }
 
     handleJoinGame(gameID){
-      this.socket.emit('join', gameID)
-      this.socket.on('play-game',(flag) => {
-        if (flag){
-          this.setStateProperty('appState', 'human-game');
-
-        }
-        else{
-          this.setState({
-            isGameIDvalid: false
-          })
-        }
-      })
+      this.socket.emit('join', (gameID))
+      
     }
     
 
     handleCreateGame(){
       this.socket.emit('create-game', {});
+      if (this.state.joined === null){
       this.setStateProperty('appState','human-create');
+      }
+      else{
+        this.setStateProperty('appState','human-game')
+      } 
     }
+
+
 
     selectGameScreen(){
       console.log(this.state);
@@ -143,9 +181,9 @@ class Game extends React.Component {
                       squares = {this.state.squares}
                       boardSize = {this.state.boardSize}
                       winningSquares = {this.state.winningSquares}
-                      handleClick = {i => this.handleClick(i)}
+                      handleClick = {i => {if (this.isMyTurn()) {this.handleClick(i)}}}
                       opponent = 'pc'
-                      resetGame = {() => this.resetGame()}
+                      
                    />
             break;
         case "human-game":
@@ -153,9 +191,9 @@ class Game extends React.Component {
                       squares = {this.state.squares}
                       boardSize = {this.state.boardSize}
                       winningSquares = {this.state.winningSquares}
-                      handleClick = {i => this.handleClick(i)}
+                      handleClick = {i => {if (this.isMyTurn()) {this.handleClick(i)}}}
                       opponent = 'human'
-                      resetGame = {()=> this.resetGame()}
+                      
                   />
             break;
         default:
@@ -169,6 +207,9 @@ class Game extends React.Component {
        if(this.state.appState == 'pc-game' && !this.state.xIsNext) {
          const pcMove = nextMove( 'O', this.state.difficulty, this.state.squares );
          setTimeout(() => this.handleClick(pcMove), 1000);
+       }
+       if (calculateWinner(this.state.squares)[0]){
+         setTimeout(()=>this.resetGame(), 5000)
        }
        return this.selectGameScreen();
     }
